@@ -20,7 +20,7 @@ test.skip('Locator syntax rules', async ({ page }) => {
   // by multiple selectors
   page.locator('input[placeholder="Email"][nbinput].shape-rectangle'); // no space between selectors means they are sibling attributes
   // by XPath
-  page.locator('//*[@id="inputEmail1"]'); // always avoid XPath if possible
+  page.locator('//*[@id="inputEmail1"]'); // avoid XPath if possible
   // by partial text match
   page.locator(':text("Using")');
   // by exact text match
@@ -41,4 +41,23 @@ test('User-facing locators', async ({ page }) => {
   await page.getByTestId('inputEmail1').fill('test@example.com');
   // by title
   await page.getByTitle('IoT Dashboard').click();
+});
+
+test('Locate child elements', async ({ page }) => {
+  await page.locator('nb-card').locator('nb-radio-group').locator(':text-is("Option 1")').click();
+  await page.locator('nb-card nb-radio-group :text-is("Option 2")').click();
+  await page.locator('nb-card').getByRole('button', { name: 'Sign in' }).first().click();
+  await page.locator('nb-card').nth(0).getByRole('button').click(); // avoid index if possible
+});
+
+test('Locate parent elements', async ({ page }) => {
+  await page.locator('nb-card', { hasText: 'Using the Grid' }).getByRole('button').click();
+  await page.locator('nb-card', { has: page.locator('#inputEmail1') }).getByRole('button').click();
+  await page.locator('nb-card').filter({ hasText: 'Using the Grid' }).getByRole('button').click(); // this is identical to the first example
+  await page.locator('nb-card')
+    .filter({ has: page.locator('nb-checkbox') })
+    .filter({ hasText: 'Sign in'})
+    .getByLabel('Email')
+    .fill('test@example.com');
+  await page.getByText('Using the Grid').locator('..').getByRole('button').click(); // this XPath method allows you to locate the parent element and then interact with its child elements; avoid if possible.
 });
