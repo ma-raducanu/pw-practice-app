@@ -56,8 +56,36 @@ test('Locate parent elements', async ({ page }) => {
   await page.locator('nb-card').filter({ hasText: 'Using the Grid' }).getByRole('button').click(); // this is identical to the first example
   await page.locator('nb-card')
     .filter({ has: page.locator('nb-checkbox') })
-    .filter({ hasText: 'Sign in'})
+    .filter({ hasText: 'Sign in' })
     .getByLabel('Email')
     .fill('test@example.com');
   await page.getByText('Using the Grid').locator('..').getByRole('button').click(); // this XPath method allows you to locate the parent element and then interact with its child elements; avoid if possible.
+});
+
+test('Reusing locators', async ({ page }) => {
+  const basicFormSection = page.locator('nb-card', { hasText: 'Basic form' });
+  const emailInput = basicFormSection.getByLabel('Email');
+  await emailInput.fill('test@example.com');
+  await basicFormSection.getByLabel('Password').fill('Test1234');
+  await basicFormSection.locator('nb-checkbox').click();
+  await basicFormSection.getByRole('button').click();
+  await expect(emailInput).toHaveValue('test@example.com');
+});
+
+test('Extracting values', async ({ page }) => {
+  // extract text
+  const basicFormSection = page.locator('nb-card', { hasText: 'Basic form' });
+  const submitButtonText = await basicFormSection.getByRole('button').textContent();
+  expect(submitButtonText).toEqual('Submit');
+  // extract multiple text values
+  const allRadioButtonTextValues = await page.locator('nb-radio').allTextContents(); // useful for arrays and such
+  expect(allRadioButtonTextValues).toContain('Option 1');
+  // extract input field values
+  const emailInput = basicFormSection.getByRole('textbox', { name: 'Email' });
+  await emailInput.fill('test@example.com');
+  const emailInputValue = await emailInput.inputValue();
+  expect(emailInputValue).toEqual('test@example.com');
+  // extract attribute value
+  const emailInputPlaceholder = await emailInput.getAttribute('placeholder');
+  expect(emailInputPlaceholder).toEqual('Email');
 });
