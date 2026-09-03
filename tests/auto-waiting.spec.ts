@@ -10,14 +10,15 @@ test.skip('Auto-waiting', async ({ page }) => {
   const dialogWithDelayForm = page.locator('nb-card', { hasText: 'Dialog with delay' });
   await dialogWithDelayForm.getByRole('button', { name: '3 seconds' }).click();
   const dialogContainer = page.locator('nb-dialog-container');
-  const dialogHeaderText = await dialogContainer.locator('nb-card-header').allTextContents();
-  expect(dialogHeaderText).toContain('Friendly reminder'); // this will fail as it will not wait for the dialog container to appear
+  const dialogContainerHeaderText = await dialogContainer.locator('nb-card-header').allTextContents();
+  expect(dialogContainerHeaderText).toContain('Friendly reminder'); // this will fail as it will not wait for the dialog container to appear
 });
 
 test('Alternative wait', async ({ page }) => {
   const dialogWithDelayForm = page.locator('nb-card', { hasText: 'Dialog with delay' });
   await dialogWithDelayForm.getByRole('button', { name: '3 seconds' }).click();
   const dialogContainer = page.locator('nb-dialog-container');
+  const dialogContainerHeader = dialogContainer.locator('nb-card-header');
   // 1. wait for the dialog container to appear
   // await dialogContainer.waitFor();
   // await page.waitForSelector('nb-dialog-container');
@@ -29,5 +30,14 @@ test('Alternative wait', async ({ page }) => {
   // await page.waitForTimeout(3500);
   // const dialogHeaderText = await dialogContainer.locator('nb-card-header').allTextContents();
   // expect(dialogHeaderText).toContain('Friendly reminder');
-  await expect(dialogContainer.locator('nb-card-header')).toHaveText('Friendly reminder'); // locator assertions are the best option
+  await expect(dialogContainerHeader).toHaveText('Friendly reminder', { timeout: 4_000 }); // locator assertions are the best option
+});
+
+test('Timeouts', async ({ page }) => {
+  // test.setTimeout(120_000);
+  test.slow(); // increases the default test time by 3x
+  const dialogWithDelayForm = page.locator('nb-card', { hasText: 'Dialog with delay' });
+  await dialogWithDelayForm.getByRole('button', { name: '3 seconds' }).click();
+  const dialogContainer = page.locator('nb-dialog-container');
+  await dialogContainer.getByRole('button', { name: 'Ok' }).click({ timeout: 4_000 });
 });
