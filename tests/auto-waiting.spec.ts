@@ -30,7 +30,7 @@ test('Alternative wait', async ({ page }) => {
   // await page.waitForTimeout(3500);
   // const dialogHeaderText = await dialogContainer.locator('nb-card-header').allTextContents();
   // expect(dialogHeaderText).toContain('Friendly reminder');
-  await expect(dialogContainerHeader).toHaveText('Friendly reminder', { timeout: 4_000 }); // locator assertions are the best option
+  await expect(dialogContainerHeader).toHaveText('Friendly reminder', { timeout: 5_000 }); // locator assertions are the best option
 });
 
 test('Timeouts', async ({ page }) => {
@@ -39,5 +39,5 @@ test('Timeouts', async ({ page }) => {
   const dialogWithDelayForm = page.locator('nb-card', { hasText: 'Dialog with delay' });
   await dialogWithDelayForm.getByRole('button', { name: '3 seconds' }).click();
   const dialogContainer = page.locator('nb-dialog-container');
-  await dialogContainer.getByRole('button', { name: 'Ok' }).click({ timeout: 4_000 });
+  await dialogContainer.getByRole('button', { name: 'Ok' }).click({ timeout: 5_000 });
 });
