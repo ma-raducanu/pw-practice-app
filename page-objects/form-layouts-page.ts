@@ -1,8 +1,8 @@
 import type { Page } from '@playwright/test';
 import { step } from '../helpers/test-step-decorator';
-import { HelperBase } from './helper-base';
+import { BasePage } from './base-page';
 
-export class FormLayoutsPage extends HelperBase {
+export class FormLayoutsPage extends BasePage {
 
   constructor(page: Page) {
     super(page);

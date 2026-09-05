@@ -1,6 +1,6 @@
 import type { Page } from '@playwright/test';
 
-export class HelperBase {
+export class BasePage {
   protected readonly page: Page;
 
   constructor(page: Page) {
