@@ -1,5 +1,5 @@
-import { Locator, Page } from '@playwright/test';
-import { NavigationPage } from './navigation-page';
+import type { Page } from '@playwright/test';
+import { step } from '../helpers/test-step-decorator';
 
 export class FormLayoutsPage {
   private readonly page: Page;
@@ -8,6 +8,7 @@ export class FormLayoutsPage {
     this.page = page;
   }
 
+  @step
   async submitUsingTheGridForm(email: string, password: string, optionText: string) {
     const usingTheGridForm = this.page.locator('nb-card', { hasText: 'Using the Grid' })
     await usingTheGridForm.getByRole('textbox', { name: 'Email' }).fill(email);
@@ -22,6 +23,7 @@ export class FormLayoutsPage {
    * @param email The email address to fill in the inline form.
    * @param checkbox Whether to check the "Remember me" checkbox.
    */
+  @step
   async submitInlineForm(fullName: string, email: string, checkbox: boolean) {
     const inlineForm = this.page.locator('nb-card', { hasText: 'Inline form' });
     await inlineForm.getByRole('textbox', { name: 'Jane Doe' }).fill(fullName);
