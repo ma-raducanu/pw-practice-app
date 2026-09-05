@@ -1,16 +1,16 @@
 import type { Page } from '@playwright/test';
 import { expect } from '@playwright/test';
 import { step } from '../helpers/test-step-decorator';
+import { HelperBase } from './helper-base';
 
-export class DatepickerPage {
-  private readonly page: Page;
+export class DatepickerPage extends HelperBase {
 
   constructor(page: Page) {
-    this.page = page;
+    super(page);
   }
 
   @step
-  async selectCommonDatePickerDateFromToday(daysFromToday: number) {
+  async selectCommonDatePickerDateFromToday(daysFromToday: number): Promise<void> {
     const calendarInput = this.page.getByPlaceholder('Form Picker');
     await calendarInput.click();
     const expectedDate = await this.selectDateInCalendar(daysFromToday);
@@ -18,7 +18,7 @@ export class DatepickerPage {
   }
 
   @step
-  async selectDatePickerWithRangeFromToday(daysFromTodayStart: number, daysFromTodayEnd: number) {
+  async selectDatePickerWithRangeFromToday(daysFromTodayStart: number, daysFromTodayEnd: number): Promise<void> {
     const calendarInput = this.page.getByPlaceholder('Range Picker');
     await calendarInput.click();
     const expectedDateStart = await this.selectDateInCalendar(daysFromTodayStart);
@@ -26,7 +26,7 @@ export class DatepickerPage {
     await expect(calendarInput).toHaveValue(`${expectedDateStart} - ${expectedDateEnd}`);
   }
 
-  private async selectDateInCalendar(daysFromToday: number) {
+  private async selectDateInCalendar(daysFromToday: number): Promise<string> {
     const date = new Date();
     date.setDate(date.getDate() + daysFromToday);
     const expectedDay = date.getDate().toString();
