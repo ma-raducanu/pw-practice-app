@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 
 test.beforeEach(async ({ page }) => {
-  await page.goto('https://playground.bondaracademy.com/');
+  await page.goto('/');
 });
 
 test('Sliders', async ({ page }) => {
@@ -30,11 +30,15 @@ test('Sliders', async ({ page }) => {
 });
 
 test.describe('Forms section', () => {
+  test.describe.configure({ retries: 2 }); // retry each test in this describe block up to 2 times, in case of failures
   test.beforeEach(async ({ page }) => {
     await page.getByRole('link', { name: 'Forms' }).click();
   });
 
-  test('Input fields', async ({ page }) => {
+  test('Input fields', async ({ page }, testInfo) => {
+    if (testInfo.retry) {
+      // clean test data etc, for the next attempt
+    }
     await page.getByRole('link', { name: 'Form Layouts' }).click();
     const usingTheGridEmailInput = page.locator('nb-card', { hasText: 'Using the Grid' }).getByRole('textbox', { name: 'Email' });
     await usingTheGridEmailInput.fill('test@example.com'); // fill does not require click or clear, it replaces the existing value automatically

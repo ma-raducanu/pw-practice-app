@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "npx playwright test",
+    "test-qa": "cross-env TEST_ENV=qa npx playwright test",
     "debug": "npx playwright test --debug"
   },
   "keywords": [],
@@ -12,7 +13,10 @@
   "license": "ISC",
   "type": "commonjs",
   "devDependencies": {
+    "@faker-js/faker": "^10.6.0",
     "@playwright/test": "^1.62.1",
-    "@types/node": "^26.4.1"
+    "@types/node": "^26.4.1",
+    "cross-env": "^10.1.0",
+    "dotenv": "^17.4.2"
   }
 }
