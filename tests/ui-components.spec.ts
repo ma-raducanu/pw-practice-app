@@ -43,7 +43,7 @@ test.describe('Forms section', () => {
     const usingTheGridEmailInput = page.locator('nb-card', { hasText: 'Using the Grid' }).getByRole('textbox', { name: 'Email' });
     await usingTheGridEmailInput.fill('test@example.com'); // fill does not require click or clear, it replaces the existing value automatically
     await usingTheGridEmailInput.clear();
-    await usingTheGridEmailInput.pressSequentially('test@example.com', { delay: 5_00 }); // simulate typing with a delay between each keypress
+    await usingTheGridEmailInput.pressSequentially('test@example.com', { delay: 50 }); // simulate typing with a delay between each keypress
     const inputValue = await usingTheGridEmailInput.inputValue(); // use this method to extract the value
     await expect(usingTheGridEmailInput).toHaveValue('test@example.com');
     await expect(usingTheGridEmailInput).toHaveValue(/example.com/); // use regex for partial match
