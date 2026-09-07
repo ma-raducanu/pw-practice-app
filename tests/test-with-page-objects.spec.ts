@@ -1,4 +1,4 @@
-import { test } from '../fixtures';
+import { test } from '../fixtures/fixtures';
 import { faker } from '@faker-js/faker';
 
 test('Navigate to form layouts page', async ({ pageManager }) => {
