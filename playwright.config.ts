@@ -13,7 +13,7 @@ export default defineConfig({
   testDir: './tests',
   fullyParallel: true,
   retries: 1,
-  reporter: 'html',
+  reporter: [['html', {open: 'never'}]],
   use: {
     // actionTimeout: 5000,
     baseURL: process.env.URL,

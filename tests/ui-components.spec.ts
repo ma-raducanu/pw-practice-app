@@ -49,11 +49,12 @@ test.describe('Forms section', () => {
     await expect(usingTheGridEmailInput).toHaveValue(/example.com/); // use regex for partial match
   });
 
-  test('Radio buttons', async ({ page }) => {
+  test('Radio buttons', { tag: '@radio' }, async ({ page }) => {
     await page.getByRole('link', { name: 'Form Layouts' }).click();
     const usingTheGridForm = page.locator('nb-card', { hasText: 'Using the Grid' });
     await usingTheGridForm.getByLabel('Option 1').check({ force: true }); // force check the radio button even if it is not visible; it will also disable playwright auto-waiting (actionability test)
     await usingTheGridForm.getByRole('radio', { name: 'Option 2' }).check({ force: true });
+    await expect(usingTheGridForm).toHaveScreenshot({ maxDiffPixels: 100 }); // use --update-snapshots to update the reference screenshot
     await expect(usingTheGridForm.getByRole('radio', { name: 'Option 2' })).toBeChecked();
     await expect(usingTheGridForm.getByRole('radio', { name: 'Option 1' })).not.toBeChecked();
   });

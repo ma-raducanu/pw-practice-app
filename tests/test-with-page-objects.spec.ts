@@ -1,7 +1,7 @@
 import { test } from '../fixtures/fixtures';
 import { faker } from '@faker-js/faker';
 
-test('Navigate to form layouts page', async ({ pageManager }) => {
+test('Navigate to form layouts page', {tag: ['@smoke', '@navigation']}, async ({ pageManager }) => {
   await pageManager.navigateTo.FormLayoutsPage();
   await pageManager.navigateTo.DatepickerPage();
   await pageManager.navigateTo.ToastrPage();
@@ -9,7 +9,7 @@ test('Navigate to form layouts page', async ({ pageManager }) => {
   await pageManager.navigateTo.SmartTablePage();
 });
 
-test('Parametrized page object methods', async ({ pageManager }) => {
+test('Parametrized page object methods', {tag: '@regression'}, async ({ pageManager }) => {
   const fakeFullName = faker.person.fullName();
   const fakeEmail = faker.internet.email({ provider: 'test.com' });
   // const fakePassword = faker.internet.password();

@@ -8,7 +8,8 @@ type FixtureTypes = {
 export const test = base.extend<FixtureTypes>({
   pageManager: async ({ page }, use) => {
     await page.goto('/');
-    await use(new PageManager(page));
+    const pm = new PageManager(page);
+    await use(pm);
   }
 });
 
